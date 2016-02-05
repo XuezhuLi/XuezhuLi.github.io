@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Computational Photography</title>
+	<link rel="stylesheet" type="text/css" href="./css/project.css">
+	</style>
+</head>
+<body>
+<div class="title">Project1</div>
+<div class="info">
+	<span>Xuezhu Li</span>
+	<span>445400</span>
+</div>
+<div class="content">
+	<div class="partition">
+		<div class="subtitle">Algorithm:</div>
+		<div>
+			<p class="content">
+			The algorithm can be divided into two parts: preprocessing and alignment.
+			</p>
+			<p class="content">
+			<ul>
+			<li>
+				<span>Preprocessing:</span>
+					<p>Divide the raw image into three R, G, B parts;</p>
+					<p>Remove the image borders in case of the possible noisy influence;</p>
+					<p>Implement the image pyramid function using Gussian filter and get a series of images in different scales.</p>
+			</li>
+			<li>
+				<span>Alignment:</span>
+				<p>Using the blue channel as the base and align the green and red channels to it. And I use sum of squared differences to score the possible displacement and pick the best one.</p>
+				<p>Firstly, use image at the top layer to do the alignment and get two displacements for green and red channels. At this point, I choose [-20,20] as possible domain to search over. Then, after getting the final displacements, multiply 2 to do the next alignment on the image at the next layer, whose resolution is twice as the top one. And now, just do a little change on the former displacement with range setting as [-3,3]. Repeat the above steps and finally, we can get the final displacements with the best matching.</p>
+			</li>
+			</ul>
+			</p>
+		</div>
+	</div>
+	<div class="partition">
+		<div class="subtitle">Result:</div>
+		<div>
+			<p class="content">
+				The final result of the algorithm is as following, contrasting with raw images:
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="1align.jpg" alt="image after alignment">
+					<img src="1.jpg" alt="raw image">
+				</li>
+				<li>
+					<img src="2align.jpg" alt="image after alignment">
+					<img src="2.jpg" alt="raw image">
+				</li>
+				<li>
+					<img src="3align.jpg" alt="image after alignment">
+					<img src="3.jpg" alt="raw image">
+				</li>
+				<li>
+					<img src="4align.jpg" alt="image after alignment">
+					<img src="4.jpg" alt="raw image">
+				</li>
+			</ol>
+			</p>
+		</div>
+	</div>
+	<div>
+		<div class="subtitle">Extra Credit Term:</div>
+		<div>
+			<span class="terms">Edge enhancement:</span>
+			<p class="content">
+				In order to enhance the effect of edge areas in the image, use a filter [0 -1 0; -1 0 1; 0 1 0] to filter different channels, which is make the lower pixel subtract the higher pixel, and the right pixel subtract the left pixel. So the edge areas whose difference will definitely larger will be enhanced. And then use three channels after filtering to do the alignment, and at this time, the main feature of the image has been extracted. When there are some images which cannot be matched well sometimes, using this kind of way can improve the final effects.
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="00998u.tifg.jpg" alt="green channel after contrasting">
+					<img src="00998u.tifgEDGE.jpg" alt="origin green channel">
+				</li>
+				<li>
+					<img src="00977u.tifg.jpg" alt="green channel after contrasting">
+					<img src="00977u.tifgEDGE.jpg" alt="origin green channel">
+				</li>
+				<li>
+					<img src="00451u.tifg.jpg" alt="green channel after contrasting">
+					<img src="00451u.tifgEDGE.jpg" alt="origin green channel">
+				</li>
+			</ol>
+			</p>
+			<p class="content">
+				Some images not be aligned very well could gain a good result using edge reinforcement.
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="00998uorigin.jpg" alt="green channel after contrasting">
+					<img src="00998uEDGE.jpg" alt="origin green channel">
+				</li>
+				<li>
+					<img src="00988uorigin.jpg" alt="green channel after contrasting">
+					<img src="00988uEDGE.jpg" alt="origin green channel">
+				</li>
+			</ol>
+			</p>
+		</div>
+		<div>
+			<span class="terms">Automatic contrasting:</span>
+			<p class="content">
+				I tried a matlab function imadjust to adjust the contrast of the image. And set the range [1.2min,0.8max] so that the brightness below the 1.2min will be set to 0, and above the 0.8max will be set to 255.
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="1Align.jpg" alt="origin image">
+					<img src="1Contr.jpg" alt="image after contrasting">
+				</li>
+				<li>
+					<img src="5Align.jpg" alt="origin image">
+					<img src="5Contr.jpg" alt="image after contrasting">
+				</li>
+				<li>
+					<img src="6Align.jpg" alt="origin image">
+					<img src="6Contr.jpg" alt="image after contrasting">
+				</li>
+			</ol>
+			</p>
+		</div>
+		<div>
+			<span class="terms">Color mapping:</span>
+			<p class="content">
+				Use the average values of R, G, B channels to do the color mapping according to the formula <b>x = x(0.5/avg)</b> in order to adjust the color.(Right: raw image; Left: Color mapping)
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="00977u.tifAlign.jpg" alt="origin image">
+					<img src="00977u.tifColor.jpg" alt="image after color mapping">
+				</li>
+				<li>
+					<img src="00988u.tifAlign.jpg" alt="origin image">
+					<img src="00988u.tifColor.jpg" alt="image after color mapping">
+				</li>
+				<li>
+					<img src="00998u.tifAlign.jpg" alt="origin image">
+					<img src="00998u.tifColor.jpg" alt="image after color mapping">
+				</li>
+			</ol>
+			</p>
+		</div>
+		<div>
+			<span class="terms">White balance:</span>
+			<p class="content">
+				Use the average value of the image to adjust the color so the brightest pixel of the image can be adjusted  to 1.(Right: raw image; Left: White balance)
+			</p>
+			<p>
+			<ol>
+				<li>
+					<img src="00977u.tifAlign.jpg" alt="origin image">
+					<img src="00977u.tifWhite.jpg" alt="image after white balance">
+				</li>
+				<li>
+					<img src="00988u.tifAlign.jpg" alt="origin image">
+					<img src="00988u.tifWhite.jpg" alt="image after white balance">
+				</li>
+				<li>
+					<img src="00451u.tifAlign.jpg" alt="origin image">
+					<img src="00451u.tifWhite.jpg" alt="image after white balance">
+				</li>
+			</ol>
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>
